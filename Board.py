@@ -1,22 +1,11 @@
 import pygame
+from Server import GameServer
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 
 square_size = 20
 padding     = 1
-
-class GameState():
-    """Class in charge of """
-    def __init__(self):
-        pass
-
-    def __setattr__(self, name, value):
-        if self.__dict__.get("_locked") and name == "x":
-            raise AttributeError("MyClass does not allow assignment to .x member")
-        self.__dict__[name] = value
-
-
 
 class Board():
     """Game of life Board, it must be initilized with
@@ -30,6 +19,12 @@ class Board():
         self.keep_playing = True
 
         self.board_state = [False] * self.width * self.height
+
+        game_server = GameServer(lambda x: self.patch(x))
+        game_server.start_server()
+
+    def patch(self,x):
+        self.board_state = x
     
     def __setattr__(self, name, value):
         if (name == "board_state"):
